@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>RiseUp – the alarm that stops when you’re awake</title>
+<meta name="description" content="RiseUp is an Android alarm that only turns off after you solve math problems or do real exercise reps. Free APK download.">
+<meta name="theme-color" content="#0B0F17">
+<link rel="icon" type="image/png" href="favicon.png">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<meta property="og:title" content="RiseUp – the alarm that stops when you’re awake">
+<meta property="og:description" content="Solve math or do real exercise reps to turn off your alarm. Free Android APK.">
+<meta property="og:image" content="riseup-logo.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#0B0F17; --surface:#131A26; --raised:#1A2333; --line:#263145;
+  --text:#F2F5FA; --muted:#9AA7BC; --amber:#FFB300; --on-amber:#1A1200; --ok:#4ADE80;
+  color-scheme:dark;
+}
+@media (prefers-color-scheme:light){
+  :root:not([data-theme="dark"]){
+    --bg:#F7F8FA; --surface:#FFFFFF; --raised:#F0F2F6; --line:#DDE2EA;
+    --text:#111827; --muted:#5B6577; --ok:#15803D; color-scheme:light;
+  }
+}
+:root[data-theme="light"]{
+  --bg:#F7F8FA; --surface:#FFFFFF; --raised:#F0F2F6; --line:#DDE2EA;
+  --text:#111827; --muted:#5B6577; --ok:#15803D; color-scheme:light;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--bg);color:var(--text);font:400 17px/1.6 "Plus Jakarta Sans",system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;-webkit-font-smoothing:antialiased}
+a{color:inherit}
+:focus-visible{outline:3px solid var(--amber);outline-offset:3px;border-radius:8px}
+.wrap{max-width:1040px;margin:0 auto;padding:0 24px}
+header{display:flex;align-items:center;justify-content:space-between;padding:20px 0}
+.brand{font-weight:700;font-size:20px;text-decoration:none;display:flex;gap:10px;align-items:center}
+.brand img{width:36px;height:36px;display:block}
+nav{display:flex;gap:22px;align-items:center;font-size:15px}
+nav a{text-decoration:none;color:var(--muted)}
+nav a:hover{color:var(--text)}
+.theme{background:var(--raised);color:var(--text);border:1px solid var(--line);border-radius:999px;width:40px;height:40px;cursor:pointer;font-size:17px}
+
+.hero{display:grid;grid-template-columns:1.1fr .9fr;gap:48px;align-items:center;padding:56px 0 88px}
+h1{font-size:clamp(38px,6vw,64px);line-height:1.05;letter-spacing:-.03em;font-weight:700;margin:0 0 20px;max-width:12em}
+.lead{font-size:19px;color:var(--muted);max-width:30em;margin:0 0 32px}
+.btn{display:inline-flex;align-items:center;gap:10px;background:var(--amber);color:var(--on-amber);font-weight:700;font-size:18px;text-decoration:none;padding:16px 28px;border-radius:999px;min-height:56px;transition:transform .15s}
+.btn:hover{transform:translateY(-2px)}
+.meta{margin:16px 0 0;font-size:14px;color:var(--muted)}
+.meta b{color:var(--text);font-weight:600}
+
+/* Phone mock of the real ringing screen */
+.phone{justify-self:center;width:290px;border-radius:44px;background:#0B0F17;border:8px solid #263145;padding:26px 18px 22px;box-shadow:0 30px 80px rgba(0,0,0,.35);color:#F2F5FA}
+.phone .app{color:#FFB300;font-weight:700;text-align:center;font-size:14px}
+.phone .time{font-size:56px;font-weight:600;text-align:center;letter-spacing:-.04em;font-variant-numeric:tabular-nums;line-height:1.1;margin-top:6px}
+.phone .time small{font-size:16px;color:#9AA7BC;letter-spacing:0;font-weight:500;margin-left:4px}
+.bars{display:flex;gap:6px;margin:18px 0 6px}
+.bars span{flex:1;height:6px;border-radius:9px;background:#263145}
+.bars span:first-child{background:#FFB300}
+.phone .hint{font-size:11px;color:#9AA7BC;text-align:center;margin-bottom:12px}
+.q{background:#131A26;border:1px solid #263145;border-radius:18px;padding:12px;text-align:center}
+.q b{display:block;font-size:26px;font-weight:600;font-variant-numeric:tabular-nums}
+.q div{margin-top:8px;background:#1A2333;border-radius:12px;padding:8px;color:#FFB300;font-size:22px;font-weight:600}
+.keys{display:grid;grid-template-columns:repeat(3,1fr);gap:7px;margin-top:10px}
+.keys span{background:#131A26;border-radius:12px;padding:9px 0;text-align:center;font-weight:600;font-size:15px}
+.keys .go{background:#FFB300;color:#1A1200;font-size:12px;line-height:2}
+
+section{padding:72px 0;border-top:1px solid var(--line)}
+h2{font-size:clamp(28px,4vw,40px);letter-spacing:-.02em;line-height:1.15;margin:0 0 16px;font-weight:700;max-width:18em}
+.sub{color:var(--muted);max-width:36em;margin:0 0 40px}
+.grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
+.card{background:var(--surface);border-radius:20px;padding:26px}
+.card h3{margin:0 0 8px;font-size:19px;font-weight:600}
+.card p{margin:0;color:var(--muted);font-size:16px}
+.card .ic{font-size:26px;margin-bottom:14px;display:block}
+.steps{counter-reset:s;list-style:none;margin:0;padding:0;display:grid;gap:14px;max-width:640px}
+.steps li{counter-increment:s;background:var(--surface);border-radius:20px;padding:20px 22px 20px 70px;position:relative}
+.steps li::before{content:counter(s);position:absolute;left:20px;top:18px;width:34px;height:34px;border-radius:50%;background:var(--amber);color:var(--on-amber);font-weight:700;display:grid;place-items:center}
+.steps b{display:block;font-weight:600}
+.steps span{color:var(--muted);font-size:16px}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:48px;align-items:start}
+details{background:var(--surface);border-radius:16px;padding:16px 20px;margin-bottom:10px}
+summary{cursor:pointer;font-weight:600;list-style:none;display:flex;justify-content:space-between;gap:12px}
+summary::after{content:"+";color:var(--amber);font-size:22px;line-height:1}
+details[open] summary::after{content:"–"}
+details p{color:var(--muted);margin:12px 0 0;font-size:16px}
+.cta{text-align:center}
+.cta h2,.cta .sub{margin-left:auto;margin-right:auto}
+footer{padding:36px 0 56px;color:var(--muted);font-size:14px;border-top:1px solid var(--line);text-align:center}
+
+@media (max-width:820px){
+  .hero{grid-template-columns:1fr;padding:32px 0 64px}
+  .grid,.two{grid-template-columns:1fr}
+  nav a.hide{display:none}
+  .phone{width:260px}
+}
+@media (prefers-reduced-motion:reduce){*{transition:none!important;scroll-behavior:auto!important}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <a class="brand" href="#top"><img src="riseup-logo.png" width="36" height="36" alt="">RiseUp</a>
+    <nav aria-label="Main">
+      <a class="hide" href="#how">How it works</a>
+      <a class="hide" href="#install">Install</a>
+      <a class="hide" href="#faq">FAQ</a>
+      <button class="theme" id="theme" aria-label="Switch light or dark theme">◐</button>
+    </nav>
+  </header>
+
+  <main id="top">
+    <div class="hero">
+      <div>
+        <h1>An alarm that only stops when you’re awake.</h1>
+        <p class="lead">RiseUp keeps ringing until you solve three math problems or complete real exercise reps counted by your camera. No snooze, no half-asleep swipe to dismiss.</p>
+        <!-- Replace YOUR-USERNAME and YOUR-REPO, then upload the APK to a GitHub Release named RiseUp.apk -->
+        <a class="btn" id="download" href="https://github.com/Sohamsen909/riseup/releases/latest/download/RiseUp.apk" download>Download for Android</a>
+        <p class="meta"><b>Version 1.0</b> · Android 8.0 or newer · Free</p>
+      </div>
+      <div class="phone" role="img" aria-label="RiseUp ringing screen showing the math problem 76 minus 45 and a numeric keypad">
+        <div class="app">RiseUp</div>
+        <div class="time">7:13<small>AM</small></div>
+        <div class="bars"><span></span><span></span><span></span></div>
+        <div class="hint">Solve 3 problems in a row to turn off the alarm</div>
+        <div class="q"><b>76 − 45</b><div>31</div></div>
+        <div class="keys"><span>1</span><span>2</span><span>3</span><span>4</span><span>5</span><span>6</span><span>7</span><span>8</span><span>9</span><span>⌫</span><span>0</span><span class="go">Submit</span></div>
+      </div>
+    </div>
+  </main>
+
+  <section id="how">
+    <h2>Pick a challenge. Wake up for real.</h2>
+    <p class="sub">Each alarm has its own wake-up challenge, so you can choose what works for your mornings.</p>
+    <div class="grid">
+      <div class="card"><span class="ic" aria-hidden="true">🧮</span><h3>Math problems</h3><p>Three correct answers in a row, in Easy, Medium or Hard. One wrong answer resets your streak.</p></div>
+      <div class="card"><span class="ic" aria-hidden="true">🏋️</span><h3>Camera exercise</h3><p>Squats, push-ups or jumping jacks, counted from your body pose on the device. Shaking the phone doesn’t count.</p></div>
+      <div class="card"><span class="ic" aria-hidden="true">🔒</span><h3>Hard to escape</h3><p>Strict mode pins the screen while the alarm rings. Leave the app and it pulls you straight back.</p></div>
+      <div class="card"><span class="ic" aria-hidden="true">📲</span><h3>Shows on your lock screen</h3><p>The challenge opens over a locked phone and turns the screen on, so you start solving immediately.</p></div>
+      <div class="card"><span class="ic" aria-hidden="true">🔁</span><h3>Reliable timing</h3><p>Exact alarms, restored after a reboot, with back-to-back alarms handled one challenge at a time.</p></div>
+      <div class="card"><span class="ic" aria-hidden="true">🛟</span><h3>Never locked out</h3><p>A manual fallback appears if the sensor or camera fails, and a 30-minute safety limit ends the lock.</p></div>
+    </div>
+  </section>
+
+  <section id="install">
+    <div class="two">
+      <div>
+        <h2>Install in a minute.</h2>
+        <p class="sub">RiseUp isn’t on the Play Store yet, so you install the APK file directly.</p>
+        <ol class="steps">
+          <li><b>Download the APK</b><span>Tap the download button on this page from your Android phone.</span></li>
+          <li><b>Allow the install</b><span>Open the file. If Android asks, allow installs from your browser or Files app.</span></li>
+          <li><b>Tap Install</b><span>If Play Protect warns about an unrecognised app, choose “Install anyway”.</span></li>
+          <li><b>Grant the permissions</b><span>Open RiseUp and allow the items in the permissions card so alarms ring reliably.</span></li>
+        </ol>
+      </div>
+      <div>
+        <h2>Set it up right.</h2>
+        <p class="sub">Phone makers limit background apps. These settings keep your alarm dependable.</p>
+        <div class="card"><p>
+          Allow <b>notifications</b>, <b>alarms &amp; reminders</b> and <b>full-screen notifications</b>.<br><br>
+          Set battery to <b>unrestricted</b> for RiseUp.<br><br>
+          On Xiaomi, Oppo, Vivo, Realme or Samsung, turn on <b>Autostart</b> and <b>Show on lock screen</b>.<br><br>
+          Test with an alarm one minute ahead before relying on it.
+        </p></div>
+      </div>
+    </div>
+  </section>
+
+  <section id="faq">
+    <h2>Questions</h2>
+    <p class="sub"></p>
+    <details><summary>Is the camera recording me?</summary><p>No. Pose detection runs on your phone. Nothing is saved, uploaded or logged. The camera is only used to count reps during an exercise alarm.</p></details>
+    <details><summary>Why does Android warn me about this app?</summary><p>This is a test build installed outside the Play Store, so Play Protect doesn’t recognise it. Only install APKs from sources you trust.</p></details>
+    <details><summary>Can I still turn the alarm off in an emergency?</summary><p>Yes. Power and phone calls are never blocked. If a sensor fails, a manual count option appears, and after 30 minutes the lock is released.</p></details>
+    <details><summary>Which Android versions are supported?</summary><p>Android 8.0 and newer. Android 13 and above asks for notification permission, and Android 14 and above needs full-screen notifications allowed.</p></details>
+    <details><summary>How do I update?</summary><p>Download the newest APK from this page and install it over the old one. Your alarms are kept.</p></details>
+  </section>
+
+  <section class="cta">
+    <h2>Be the one who gets up.</h2>
+    <p class="sub">Free to download. Takes about a minute to set up.</p>
+    <a class="btn" id="download2" href="https://github.com/Sohamsen909/riseup/releases/latest/download/RiseUp.apk" download>Download for Android</a>
+  </section>
+
+  <footer><img src="riseup-logo.png" width="48" height="48" alt="RiseUp logo" style="display:block;margin:0 auto 14px">© 2026 RiseUp. Built with Google AI Studio.<br><a href="privacy.html" style="color:inherit">Privacy Policy</a> · <a href="terms.html" style="color:inherit">Terms of Use</a></footer>
+</div>
+<script>
+(function(){
+  var r=document.documentElement,b=document.getElementById('theme'),k='riseup-theme';
+  try{var s=localStorage.getItem(k);if(s)r.setAttribute('data-theme',s);}catch(e){}
+  b.addEventListener('click',function(){
+    var dark=r.getAttribute('data-theme')?r.getAttribute('data-theme')==='dark':!matchMedia('(prefers-color-scheme:light)').matches;
+    var n=dark?'light':'dark';r.setAttribute('data-theme',n);
+    try{localStorage.setItem(k,n);}catch(e){}
+  });
+})();
+</script>
+</body>
+</html>
